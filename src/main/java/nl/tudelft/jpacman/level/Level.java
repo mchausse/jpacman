@@ -263,11 +263,19 @@ public class Level {
      * Updates the observers about the state of this level.
      */
     private void updateObservers() {
+        updateObserversIfPlayerIsAlive();
+        updateObserversIfPellets();
+    }
+
+    private void updateObserversIfPlayerIsAlive() {
         if (!isAnyPlayerAlive()) {
             for (LevelObserver observer : observers) {
                 observer.levelLost();
             }
         }
+    }
+
+    private void updateObserversIfPellets() {
         if (remainingPellets() == 0) {
             for (LevelObserver observer : observers) {
                 observer.levelWon();
