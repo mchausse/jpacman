@@ -21,7 +21,7 @@ import nl.tudelft.jpacman.npc.Ghost;
  * A level of Pac-Man. A level consists of the board with the players and the
  * AIs on it.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class Level {
@@ -92,9 +92,9 @@ public class Level {
      */
     public Level(Board board, List<Ghost> ghosts, List<Square> startPositions,
                  CollisionMap collisionMap) {
-        assert board != null;
-        assert ghosts != null;
-        assert startPositions != null;
+        if (board == null) throw new AssertionError();
+        if (ghosts == null) throw new AssertionError();
+        if (startPositions == null) throw new AssertionError();
 
         this.board = board;
         this.inProgress = false;
@@ -138,7 +138,7 @@ public class Level {
      *            The player to register.
      */
     public void registerPlayer(Player player) {
-        assert player != null;
+        if (player == null) throw new AssertionError();
         assert !startSquares.isEmpty();
 
         if (players.contains(player)) {
@@ -170,9 +170,9 @@ public class Level {
      *            The direction to move the unit in.
      */
     public void move(Unit unit, Direction direction) {
-        assert unit != null;
-        assert direction != null;
-        assert unit.hasSquare();
+        if (unit == null) throw new AssertionError();
+        if (direction == null) throw new AssertionError();
+        if (!unit.hasSquare()) throw new AssertionError();
 
         if (!isInProgress()) {
             return;
@@ -297,11 +297,11 @@ public class Level {
      * @return The amount of pellets remaining on the board.
      */
     public int remainingPellets() {
-        Board board = getBoard();
+        Board localBoard = getBoard();
         int pellets = 0;
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
-                for (Unit unit : board.squareAt(x, y).getOccupants()) {
+        for (int x = 0; x < localBoard.getWidth(); x++) {
+            for (int y = 0; y < localBoard.getHeight(); y++) {
+                for (Unit unit : localBoard.squareAt(x, y).getOccupants()) {
                     if (unit instanceof Pellet) {
                         pellets++;
                     }
